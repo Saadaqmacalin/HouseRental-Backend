@@ -8,6 +8,7 @@ const {
 } = require("../controllers/userController");
 
 const { protect, admin } = require("../middleware/authMiddleware");
+
 router.route("/createUser").post(protect,admin,createUser)
 router.route("/").get(protect, admin, getUsers);
 

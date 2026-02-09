@@ -40,6 +40,12 @@ app.get('/', (req, res) => {
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/house_rental_db';
 
+if (process.env.MONGO_URI) {
+  console.log('Using MONGO_URI from .env');
+} else {
+  console.log('MONGO_URI not found in .env, using local default');
+}
+
 // Ensure JWT_SECRET is available
 if (!process.env.JWT_SECRET) {
     console.warn('Warning: JWT_SECRET not defined in .env, using default.');
