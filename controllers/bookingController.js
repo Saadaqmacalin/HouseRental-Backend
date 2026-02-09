@@ -158,7 +158,7 @@ const endBooking = async (req, res) => {
     res.json({ message: 'Booking ended successfully', booking });
   } catch (error) {
     console.error('End Booking Error:', error);
-    res.status(500).json({ message: 'Server Error' });
+    res.status(500).json({ message: 'Server Error', error: error.message });
   }
 };
 

@@ -32,6 +32,16 @@ app.use('/api/customers', require('./routes/customers'));
 app.use('/api/payments', require('./routes/payments'));
 app.use('/api/landlords', require('./routes/landlords'));
 
+// Global Error Handler for detailed debugging
+app.use((err, req, res, next) => {
+  console.error('SERVER ERROR:', err);
+  res.status(500).json({
+    message: 'Internal Server Error',
+    error: err.message,
+    stack: process.env.NODE_ENV === 'production' ? null : err.stack
+  });
+});
+
 app.get('/', (req, res) => {
   res.send('House Rental API is running...');
 });
