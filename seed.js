@@ -42,7 +42,7 @@ const seedAdmin = async () => {
                     description: 'Stunning villa with direct ocean access and private pool.',
                     status: 'available',
                     owner: owners[0]._id,
-                    imageUrl: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'
+                    imageUrl: 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'
                 },
                 {
                     address: '456 Skyline Ave, New York',
@@ -52,7 +52,7 @@ const seedAdmin = async () => {
                     description: 'Modern penthouse with floor-to-ceiling windows and city views.',
                     status: 'available',
                     owner: owners[0]._id,
-                    imageUrl: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'
+                    imageUrl: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'
                 },
                 {
                     address: '789 Forest Retreat, Aspen',
