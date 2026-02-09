@@ -6,7 +6,7 @@ const connectDB = async (url) => {
     console.log('MongoDB Connected Successfully');
   } catch (error) {
     console.error('MongoDB Connection Failed:', error);
-    
+    throw error; // Re-throw to prevent server starting with broken connection
   }
 };
 
