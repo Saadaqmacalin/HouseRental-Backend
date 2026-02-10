@@ -9,6 +9,7 @@ const Payment = require('../models/Payment');
 const getLandlordStats = async (req, res) => {
   try {
     const landlordId = req.user.id;
+    console.log('Fetching stats for landlord:', landlordId);
 
     const totalHouses = await House.countDocuments({ owner: landlordId });
     const rentedHouses = await House.countDocuments({ owner: landlordId, status: 'booked' });
