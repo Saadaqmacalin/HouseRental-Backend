@@ -93,6 +93,7 @@ const loginCustomer = async (req, res) => {
         _id: customer._id,
         name: customer.name,
         email: customer.email,
+        role: 'customer',
         favorites: customer.favorites,
         token: generateToken(customer._id, 'customer'),
       });
@@ -100,7 +101,8 @@ const loginCustomer = async (req, res) => {
       res.status(401).json({ message: 'Invalid email or password' });
     }
   } catch (error) {
-    res.status(500).json({ message: 'Server Error' });
+    console.error('LOGIN_CUSTOMER_ERROR:', error);
+    res.status(500).json({ message: 'Server Error', error: error.message });
   }
 };
 
@@ -129,6 +131,7 @@ const registerCustomer = async (req, res) => {
         _id: customer._id,
         name: customer.name,
         email: customer.email,
+        role: 'customer',
         favorites: customer.favorites,
         token: generateToken(customer._id, 'customer'),
       });
@@ -136,7 +139,8 @@ const registerCustomer = async (req, res) => {
       res.status(400).json({ message: 'Invalid customer data' });
     }
   } catch (error) {
-    res.status(500).json({ message: 'Server Error' });
+    console.error('REGISTER_CUSTOMER_ERROR:', error);
+    res.status(500).json({ message: 'Server Error', error: error.message });
   }
 };
 
@@ -154,13 +158,15 @@ const loginLandlord = async (req, res) => {
         _id: landlord._id,
         name: landlord.name,
         email: landlord.email,
+        role: 'landlord',
         token: generateToken(landlord._id, 'landlord'),
       });
     } else {
       res.status(401).json({ message: 'Invalid email or password' });
     }
   } catch (error) {
-    res.status(500).json({ message: 'Server Error' });
+    console.error('LOGIN_LANDLORD_ERROR:', error);
+    res.status(500).json({ message: 'Server Error', error: error.message });
   }
 };
 
@@ -171,10 +177,13 @@ const registerLandlord = async (req, res) => {
   const { name, email, password, phoneNumber, nationalID, address } = req.body;
 
   try {
-    const landlordExists = await Landlord.findOne({ email });
+    const landlordExists = await Landlord.findOne({ 
+      $or: [{ email }, { nationalID }] 
+    });
 
     if (landlordExists) {
-      return res.status(400).json({ message: 'Landlord already exists' });
+      const field = landlordExists.email === email ? 'Email' : 'National ID';
+      return res.status(400).json({ message: `${field} already exists` });
     }
 
     const landlord = await Landlord.create({
@@ -191,13 +200,15 @@ const registerLandlord = async (req, res) => {
         _id: landlord._id,
         name: landlord.name,
         email: landlord.email,
+        role: 'landlord',
         token: generateToken(landlord._id, 'landlord'),
       });
     } else {
       res.status(400).json({ message: 'Invalid landlord data' });
     }
   } catch (error) {
-    res.status(500).json({ message: 'Server Error' });
+    console.error('REGISTER_LANDLORD_ERROR:', error);
+    res.status(500).json({ message: 'Server Error', error: error.message });
   }
 };
 
