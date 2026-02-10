@@ -20,9 +20,10 @@ const generateToken = (id, role) => {
 // @access  Public
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
+  const normalizedEmail = email.toLowerCase();
 
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: normalizedEmail });
 
     if (user && (await user.matchPassword(password))) {
       res.json({
@@ -47,9 +48,10 @@ const loginUser = async (req, res) => {
 // @access  Public (Should be protected or strictly controlled in production)
 const registerUser = async (req, res) => {
   const { name, email, phoneNumber, password, role } = req.body;
+  const normalizedEmail = email.toLowerCase();
 
   try {
-    const userExists = await User.findOne({ email });
+    const userExists = await User.findOne({ email: normalizedEmail });
 
     if (userExists) {
       return res.status(400).json({ message: 'User already exists' });
@@ -57,7 +59,7 @@ const registerUser = async (req, res) => {
 
     const user = await User.create({
       name,
-      email,
+      email: normalizedEmail,
       phoneNumber,
       password,
       role: role || 'staff',
@@ -84,9 +86,10 @@ const registerUser = async (req, res) => {
 // @access  Public
 const loginCustomer = async (req, res) => {
   const { email, password } = req.body;
+  const normalizedEmail = email.toLowerCase();
 
   try {
-    const customer = await Customer.findOne({ email });
+    const customer = await Customer.findOne({ email: normalizedEmail });
 
     if (customer && (await customer.matchPassword(password))) {
       res.json({
@@ -111,9 +114,10 @@ const loginCustomer = async (req, res) => {
 // @access  Public
 const registerCustomer = async (req, res) => {
   const { name, email, password, profileImage } = req.body;
+  const normalizedEmail = email.toLowerCase();
 
   try {
-    const customerExists = await Customer.findOne({ email });
+    const customerExists = await Customer.findOne({ email: normalizedEmail });
 
     if (customerExists) {
       return res.status(400).json({ message: 'Customer already exists' });
@@ -121,7 +125,7 @@ const registerCustomer = async (req, res) => {
 
     const customer = await Customer.create({
       name,
-      email,
+      email: normalizedEmail,
       password,
       profileImage,
     });
@@ -149,9 +153,10 @@ const registerCustomer = async (req, res) => {
 // @access  Public
 const loginLandlord = async (req, res) => {
   const { email, password } = req.body;
+  const normalizedEmail = email.toLowerCase();
 
   try {
-    const landlord = await Landlord.findOne({ email });
+    const landlord = await Landlord.findOne({ email: normalizedEmail });
 
     if (landlord && (await landlord.matchPassword(password))) {
       res.json({
@@ -175,20 +180,22 @@ const loginLandlord = async (req, res) => {
 // @access  Public
 const registerLandlord = async (req, res) => {
   const { name, email, password, phoneNumber, nationalID, address } = req.body;
+  const normalizedEmail = email.toLowerCase();
 
   try {
-    const landlordExists = await Landlord.findOne({ 
-      $or: [{ email }, { nationalID }] 
+    // Improved duplicate check
+    const landlordExists = await Landlord.findOne({
+      $or: [{ email: normalizedEmail }, { nationalID }]
     });
 
     if (landlordExists) {
-      const field = landlordExists.email === email ? 'Email' : 'National ID';
+      const field = landlordExists.email === normalizedEmail ? 'Email' : 'National ID';
       return res.status(400).json({ message: `${field} already exists` });
     }
 
     const landlord = await Landlord.create({
       name,
-      email,
+      email: normalizedEmail,
       password,
       phoneNumber,
       nationalID,

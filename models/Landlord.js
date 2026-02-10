@@ -47,6 +47,10 @@ LandlordSchema.methods.matchPassword = async function (enteredPassword) {
 };
 
 LandlordSchema.pre('save', async function (next) {
+  if (this.isModified('email')) {
+    this.email = this.email.toLowerCase();
+  }
+
   if (!this.isModified('password')) {
     return next();
   }
